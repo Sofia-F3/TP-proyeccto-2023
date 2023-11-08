@@ -1,0 +1,258 @@
+#include <TimerOne.h>
+int mSeg;
+
+//ULTRAS B
+#define ECHO_A A1
+#define TRIG_A A0
+long duracionA;
+int distanciaA;
+
+//ULTRAS B
+#define ECHO_B A3
+#define TRIG_B A2
+long duracionB;
+int distanciaB;
+
+//SEGMENTOS A
+#define AA  52
+#define AB  51
+#define AC  50
+#define AD  49
+#define AE  48
+#define AF  47
+#define AG  46
+int numeroA = 0; //por ahora son 7 palos
+
+//SEGMENTOS A
+#define BA  44
+#define BB  43
+#define BC  42
+#define BD  41
+#define BE  40
+#define BF  39
+#define BG  38
+int numeroB = 7; //por ahora son 7 palos
+
+
+//MAQUINA
+#define ESPERA 0
+#define DETECTA 1
+#define CAMBIO 2
+int estadoMaqReac = ESPERA;
+
+#define DIST_PALOS 30
+#define TIEMPO_DETECT 6
+
+int flag = 0;
+
+void setup() {
+  Timer1.initialize(1000); //Configuro timer para que interrumpa cada 1 milisegundo.
+  Timer1.attachInterrupt(ISR_timer);
+
+  pinMode(ECHO_A, INPUT);
+  pinMode(ECHO_B, INPUT);
+  pinMode(TRIG_A, OUTPUT);
+  pinMode(TRIG_B, OUTPUT);
+
+  pinMode(AA, OUTPUT);
+  pinMode(AB, OUTPUT);
+  pinMode(AC, OUTPUT);
+  pinMode(AD, OUTPUT);
+  pinMode(AE, OUTPUT);
+  pinMode(AF, OUTPUT);
+  pinMode(AG, OUTPUT);
+
+  pinMode(BA, OUTPUT);
+  pinMode(BB, OUTPUT);
+  pinMode(BC, OUTPUT);
+  pinMode(BD, OUTPUT);
+  pinMode(BE, OUTPUT);
+  pinMode(BF, OUTPUT);
+  pinMode(BG, OUTPUT);
+
+  Serial.begin(9600);
+}
+
+void loop() {
+  numeroA = 0;
+  maquinaReaccion();
+  sensores();
+  numA();
+  numB();
+  if (flag == 1) {
+    flag = 0;
+    numeroB--;
+  }
+  if (numeroB < 0) {
+    numeroB = 7;
+  }
+  
+  // paso un tiempo desde q se tiro el palo y ninung sensor detecta --> numero++;
+}
+
+void maquinaReaccion() {
+  switch (estadoMaqReac) {
+    case ESPERA:
+      if (distanciaB <= DIST_PALOS || distanciaA <= DIST_PALOS) {
+        mSeg = 0;
+        Serial.println("Hay palo");
+        estadoMaqReac = DETECTA;
+      }
+      break;
+
+    case DETECTA:
+      if (distanciaB <= DIST_PALOS || distanciaA <= DIST_PALOS && mSeg  >= TIEMPO_DETECT) {
+        estadoMaqReac = CAMBIO;
+        Serial.println(flag);
+      }
+
+      if (distanciaB > DIST_PALOS || distanciaA > DIST_PALOS && mSeg  >= TIEMPO_DETECT) {
+        estadoMaqReac = ESPERA;
+      }
+      break;
+
+    case CAMBIO:
+      if (distanciaB > DIST_PALOS || distanciaA > DIST_PALOS ) {
+        flag = 1;
+        estadoMaqReac = ESPERA;
+      }
+      break;
+  }
+}
+
+void sensores() {
+  digitalWrite(TRIG_A, LOW);
+  delayMicroseconds(2);
+  digitalWrite(TRIG_A, HIGH);
+  delayMicroseconds(10);
+  digitalWrite(TRIG_A, LOW);
+
+  duracionA = pulseIn(ECHO_A, HIGH);
+  distanciaA = duracionA * 0.034 / 2;
+
+
+  digitalWrite(TRIG_B, LOW);
+  delayMicroseconds(2);
+  digitalWrite(TRIG_B, HIGH);
+  delayMicroseconds(10);
+  digitalWrite(TRIG_B, LOW);
+
+  duracionB = pulseIn(ECHO_B, HIGH);
+  distanciaB = duracionB * 0.034 / 2;
+
+  Serial.println("Distancia A: " + String(distanciaA) + "       Distancia B: " + String(distanciaB));
+}
+
+void segA (int a, int b, int c, int d, int e, int f, int g) {
+  digitalWrite(AA, a);
+  digitalWrite(AB, b);
+  digitalWrite(AC, c);
+  digitalWrite(AD, d);
+  digitalWrite(AE, e);
+  digitalWrite(AF, f);
+  digitalWrite(AG, g);
+}
+
+void segB (int a, int b, int c, int d, int e, int f, int g) {
+  digitalWrite(BA, a);
+  digitalWrite(BB, b);
+  digitalWrite(BC, c);
+  digitalWrite(BD, d);
+  digitalWrite(BE, e);
+  digitalWrite(BF, f);
+  digitalWrite(BG, g);
+}
+
+void numA() {
+  switch (numeroA) {
+    case 0 :
+      segA (0, 0, 0, 0, 0, 1, 0);
+      break;
+
+    case 1 :
+      segA (0, 1, 1, 0, 1, 1, 1);
+      break;
+
+    case 2 :
+      segA (1, 0, 0, 0, 0, 0, 1);
+      break;
+
+    case 3 :
+      segA (0, 0, 1, 0, 0, 0, 1);
+      break;
+
+    case 4 :
+      segA (0, 1, 1, 0, 1, 0, 0);
+      break;
+
+    case 5 :
+      segA (0, 0, 1, 1, 0, 0, 0);
+      break;
+
+    case 6 :
+      segA (0, 0, 0, 1, 0, 0, 0);
+      break;
+
+    case 7 :
+      segA(0, 1, 1, 0, 0, 1, 1);
+      break;
+
+    case 8 :
+      segA(0, 0, 0, 0, 0, 0, 0);
+      break;
+
+    case 9 :
+      segA(0, 0, 0, 0, 0, 0, 0);
+      break;
+  }
+}
+
+void numB() {
+  switch (numeroB) {
+    case 0 :
+      segB (0, 0, 0, 0, 0, 0, 1);
+      break;
+
+    case 1 :
+      segB (0, 1, 1, 0, 1, 1, 1);
+      break;
+
+    case 2 :
+      segB (1, 0, 0, 0, 0, 1, 0);
+      break;
+
+    case 3 :
+      segB (0, 0, 1, 0, 0, 1, 0);
+      break;
+
+    case 4 :
+      segB (0, 1, 1, 0, 1, 0, 0);
+      break;
+
+    case 5 :
+      segB (0, 0, 1, 1, 0, 0, 0);
+      break;
+
+    case 6 :
+      segB (0, 0, 0, 1, 0, 0, 0);
+      break;
+
+    case 7 :
+      segB(0, 1, 1, 0, 0, 1, 1);
+      break;
+
+    case 8 :
+      segB (0, 0, 0, 0, 0, 0, 0);
+      break;
+
+    case 9 :
+      segB (0, 0, 0, 0, 0, 0, 0);
+      break;
+  }
+}
+
+
+void ISR_timer (void)
+{
+  mSeg++;
+}
