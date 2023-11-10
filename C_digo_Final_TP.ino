@@ -121,24 +121,7 @@ void setup() {
 void loop() {
   //moverServos();
   maquinaSERVOS();
-  if (estado1 == true && estado2 == true && estado3 == true && estado4 == true && estado5 == true && estado6 == true && estado7 == true) {
-    estado1 = false;
-    estado2 = false;
-    estado3 = false;
-    estado4 = false;
-    estado5 = false;
-    estado6 = false;
-    estado7 = false;
-    servo1.write(180);
-    servo2.write(180);
-    servo3.write(180);
-    servo4.write(180);
-    servo5.write(180);
-    servo6.write(180);
-    servo7.write(180);
-    Serial.println("Todos los servos a 180");
-  }
-  
+
   numeroA = 0;
   maquinaReaccion();
   sensores();
@@ -192,92 +175,110 @@ void maquinaSERVOS() {
       Serial.println(num);
       mSeg = 0;
       estadoMaquina = MOD_SERVO;
-      break;
+      if (estado1 == true && estado2 == true && estado3 == true && estado4 == true && estado5 == true && estado6 == true && estado7 == true) {
+        estado1 = false;
+        estado2 = false;
+        estado3 = false;
+        estado4 = false;
+        estado5 = false;
+        estado6 = false;
+        estado7 = false;
+        servo1.write(180);
+        servo2.write(180);
+        servo3.write(180);
+        servo4.write(180);
+        servo5.write(180);
+        servo6.write(180);
+        servo7.write(180);
+        Serial.println("Todos los servos a 180");
+        estadoMaquina = ESPERAR;
+        break;
 
-    case MOD_SERVO:
-      switch (num) {
-        case 1:
-          if (estado1 == false) {
-            servo1.write(90);
-            Serial.println("Servo 1 a 90");
-            estado1 = true;
-            estadoMaquina = ESPERAR;
-          } else {
-            estadoMaquina = OBTENER_NUMERO;
-          }
-          break;
+      case MOD_SERVO:
+        switch (num) {
+          case 1:
+            if (estado1 == false) {
+              servo1.write(90);
+              Serial.println("Servo 1 a 90");
+              estado1 = true;
+              estadoMaquina = ESPERAR;
+            } else {
+              estadoMaquina = OBTENER_NUMERO;
+            }
+            break;
 
-        case 2:
-          if (estado2 == false) {
-            servo2.write(90);
-            Serial.println("Servo 2 a 90");
-            estado2 = true;
-            estadoMaquina = ESPERAR;
-          } else {
-            estadoMaquina = OBTENER_NUMERO;
-          }
-          break;
+          case 2:
+            if (estado2 == false) {
+              servo2.write(90);
+              Serial.println("Servo 2 a 90");
+              estado2 = true;
+              estadoMaquina = ESPERAR;
+            } else {
+              estadoMaquina = OBTENER_NUMERO;
+            }
+            break;
 
-        case 3:
-          if (estado3 == false) {
-            servo3.write(90);
-            Serial.println("Servo 3 a 90");
-            estado3 = true;
-            estadoMaquina = ESPERAR;
-          } else {
-            estadoMaquina = OBTENER_NUMERO;
-          }
-          break;
+          case 3:
+            if (estado3 == false) {
+              servo3.write(90);
+              Serial.println("Servo 3 a 90");
+              estado3 = true;
+              estadoMaquina = ESPERAR;
+            } else {
+              estadoMaquina = OBTENER_NUMERO;
+            }
+            break;
 
-        case 4:
-          if (estado4 == false) {
-            servo4.write(90);
-            Serial.println("Servo 4 a 90");
-            estado4 = true;
-            estadoMaquina = ESPERAR;
-          } else {
-            estadoMaquina = OBTENER_NUMERO;
-          }
-          break;
+          case 4:
+            if (estado4 == false) {
+              servo4.write(90);
+              Serial.println("Servo 4 a 90");
+              estado4 = true;
+              estadoMaquina = ESPERAR;
+            } else {
+              estadoMaquina = OBTENER_NUMERO;
+            }
+            break;
 
-        case 5:
-          if (estado5 == false) {
-            servo5.write(90);
-            Serial.println("Servo 5 a 90");
-            estado5 = true;
-            estadoMaquina = ESPERAR;
-          } else {
-            estadoMaquina = OBTENER_NUMERO;
-          }
-          break;
+          case 5:
+            if (estado5 == false) {
+              servo5.write(90);
+              Serial.println("Servo 5 a 90");
+              estado5 = true;
+              estadoMaquina = ESPERAR;
+            } else {
+              estadoMaquina = OBTENER_NUMERO;
+            }
+            break;
 
-        case 6:
-          if (estado6 == false) {
-            servo6.write(90);
-            Serial.println("Servo 6 a 90");
-            estado6 = true;
-            estadoMaquina = ESPERAR;
-          } else {
-            estadoMaquina = OBTENER_NUMERO;
-          }
-          break;
+          case 6:
+            if (estado6 == false) {
+              servo6.write(90);
+              Serial.println("Servo 6 a 90");
+              estado6 = true;
+              estadoMaquina = ESPERAR;
+            } else {
+              estadoMaquina = OBTENER_NUMERO;
+            }
+            break;
 
-        case 7:
-          if (estado7 == false) {
-            servo7.write(90);
-            Serial.println("Servo 7 a 90");
-            estado7 = true;
-            estadoMaquina = ESPERAR;
-          } else {
-            estadoMaquina = OBTENER_NUMERO;
-          }
-          break;
-      }
-      break;
+          case 7:
+            if (estado7 == false) {
+              servo7.write(90);
+              Serial.println("Servo 7 a 90");
+              estado7 = true;
+              estadoMaquina = ESPERAR;
+            } else {
+              estadoMaquina = OBTENER_NUMERO;
+            }
+            break;
+        }
+        break;
 
-    case ESPERAR:
-      if (mSeg > 1500) {
-        estadoMaquina = OBTENER_NUMERO;
+      case ESPERAR:
+        if (mSeg > 1500) {
+          estadoMaquina = OBTENER_NUMERO;
+        }
       }
       break;
   }
