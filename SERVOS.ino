@@ -38,13 +38,22 @@ void setup() {
   servo5.attach(6);
   servo6.attach(7);
   servo7.attach(8);
+  
+  servo1.write(180);
+  servo2.write(180);
+  servo3.write(180);
+  servo4.write(180);
+  servo5.write(180);
+  servo6.write(180);
+  servo7.write(180);
+  
   Timer1.initialize(1000);
   Timer1.attachInterrupt(TIMER);
 }
 
 void loop() {
-  maquina();
-
+  //moverServos();
+  maquinaSERVOS();
   if (estado1 == true && estado2 == true && estado3 == true && estado4 == true && estado5 == true && estado6 == true && estado7 == true) {
     estado1 = false;
     estado2 = false;
@@ -64,7 +73,7 @@ void loop() {
   }
 }
 
-void maquina() {
+void maquinaSERVOS() {
   switch (estadoMaquina) {
     case OBTENER_NUMERO:
       num = random(1, 8);
@@ -82,7 +91,7 @@ void maquina() {
             estado1 = true;
             estadoMaquina = ESPERAR;
           } else {
-            estadoMaquina = OBTENER_NUMERO;
+            estadoMaquina = OBTENER_NUMERO; 
           }
           break;
 
@@ -160,4 +169,41 @@ void maquina() {
       }
       break;
   }
+}
+
+void moverServos(){
+  servo1.write(90);
+  delay(500);
+  servo1.write(180);
+  delay(500);
+
+  servo2.write(90);
+  delay(500);
+  servo2.write(180);
+  delay(500);
+
+  servo3.write(90);
+  delay(500);
+  servo3.write(180);
+  delay(500);
+
+  servo4.write(90);
+  delay(500);
+  servo4.write(180);
+  delay(500);
+
+  servo5.write(90);
+  delay(500);
+  servo5.write(180);
+  delay(500);
+
+  servo6.write(90);
+  delay(500);
+  servo6.write(180);
+  delay(500);
+
+  servo7.write(90);
+  delay(500);
+  servo7.write(180);
+  delay(500);
 }
