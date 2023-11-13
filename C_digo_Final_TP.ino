@@ -1,7 +1,8 @@
 #include <TimerOne.h>
 #include <Servo.h>
 
-int mSeg;
+int mSegA;
+int mSegB;
 
 //ULTRAS B
 #define ECHO_A A1
@@ -71,7 +72,8 @@ bool estado6 = false;
 bool estado7 = false;
 
 void ISR_timer (void) {
-  mSeg++;
+  mSegA++;
+  mSegB++;
 }
 
 void setup() {
@@ -134,7 +136,6 @@ void loop() {
   if (numeroB < 0) {
     numeroB = 7;
   }
-
   // paso un tiempo desde q se tiro el palo y ninung sensor detecta --> numero++;
 }
 
@@ -142,19 +143,18 @@ void maquinaReaccion() {
   switch (estadoMaqReac) {
     case ESPERA:
       if (distanciaB <= DIST_PALOS || distanciaA <= DIST_PALOS) {
-        mSeg = 0;
+        mSegA = 0;
         Serial.println("Hay palo");
         estadoMaqReac = DETECTA;
       }
       break;
 
     case DETECTA:
-      if (distanciaB <= DIST_PALOS || distanciaA <= DIST_PALOS && mSeg  >= TIEMPO_DETECT) {
+      if (distanciaB <= DIST_PALOS || distanciaA <= DIST_PALOS && mSegA  >= TIEMPO_DETECT) {
         estadoMaqReac = CAMBIO;
-        Serial.println(flag);
       }
 
-      if (distanciaB > DIST_PALOS || distanciaA > DIST_PALOS && mSeg  >= TIEMPO_DETECT) {
+      if (distanciaB > DIST_PALOS || distanciaA > DIST_PALOS && mSegA  >= TIEMPO_DETECT) {
         estadoMaqReac = ESPERA;
       }
       break;
@@ -173,7 +173,7 @@ void maquinaSERVOS() {
     case OBTENER_NUMERO:
       num = random(1, 8);
       Serial.println(num);
-      mSeg = 0;
+      mSegB = 0;
       estadoMaquina = MOD_SERVO;
       if (estado1 == true && estado2 == true && estado3 == true && estado4 == true && estado5 == true && estado6 == true && estado7 == true) {
         estado1 = false;
@@ -276,7 +276,7 @@ void maquinaSERVOS() {
         break;
 
       case ESPERAR:
-        if (mSeg > 1500) {
+        if (mSegB > 1500) {
           estadoMaquina = OBTENER_NUMERO;
         }
       }
