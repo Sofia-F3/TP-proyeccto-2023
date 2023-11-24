@@ -17,23 +17,23 @@ long duracionB;
 int distanciaB;
 
 //SEGMENTOS A
-#define AA  52
-#define AB  51
-#define AC  50
-#define AD  49
-#define AE  48
-#define AF  47
-#define AG  46
+#define AA  44
+#define AB  42
+#define AC  26
+#define AD  24
+#define AE  22
+#define AF  46
+#define AG  48
 int numeroA = 0; //por ahora son 7 palos
 
 //SEGMENTOS A
-#define BA  44
-#define BB  43
-#define BC  42
-#define BD  41
-#define BE  40
-#define BF  39
-#define BG  38
+#define BA  34
+#define BB  36
+#define BC  32
+#define BD  30
+#define BE  28
+#define BF  38
+#define BG  40
 int numeroB = 7; //por ahora son 7 palos
 
 //MAQUINA 7 segmentos y ultrasónicos
