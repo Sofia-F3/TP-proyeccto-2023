@@ -19,19 +19,19 @@ int distanciaB;
 //SEGMENTOS A
 #define AA  44
 #define AB  42
-#define AC  26
-#define AD  24
-#define AE  22
+#define AC  28
+#define AD  30
+#define AE  32
 #define AF  46
 #define AG  48
 int numeroA = 0; //por ahora son 7 palos
 
 //SEGMENTOS A
-#define BA  34
-#define BB  36
-#define BC  32
-#define BD  30
-#define BE  28
+#define BA  36
+#define BB  34
+#define BC  22
+#define BD  24
+#define BE  26
 #define BF  38
 #define BG  40
 int numeroB = 7; //por ahora son 7 palos
@@ -124,16 +124,16 @@ void loop() {
   //moverServos();
   maquinaSERVOS();
 
-  numeroA = 0;
+  numeroB = 0;
   maquinaReaccion();
-  sensores();
+  //sensores();
   numA();
   numB();
   if (flag == 1) {
     flag = 0;
-    numeroB--;
+    numeroA--;
   }
-  if (numeroB < 0) {
+  if (numeroA < 0) {
     numeroB = 7;
   }
   // paso un tiempo desde q se tiro el palo y ninung sensor detecta --> numero++;
@@ -276,7 +276,7 @@ void maquinaSERVOS() {
         break;
 
       case ESPERAR:
-        if (mSegB > 1500) {
+        if (mSegB > 2333) {
           estadoMaquina = OBTENER_NUMERO;
         }
       }
@@ -364,47 +364,46 @@ void segB (int a, int b, int c, int d, int e, int f, int g) {
   digitalWrite(BF, f);
   digitalWrite(BG, g);
 }
-
 void numA() {
   switch (numeroA) {
     case 0 :
-      segA (0, 0, 0, 0, 0, 1, 0);
+      segA (0, 0, 0, 0, 0, 0, 1);
       break;
 
     case 1 :
-      segA (0, 1, 1, 0, 1, 1, 1);
+      segA (1, 0, 0, 1, 1, 1, 1);
       break;
 
     case 2 :
-      segA (1, 0, 0, 0, 0, 0, 1);
+      segA (0, 0, 1, 0, 0, 1, 0);
       break;
 
     case 3 :
-      segA (0, 0, 1, 0, 0, 0, 1);
+      segA (0, 0, 0, 0, 1, 1, 0);
       break;
 
     case 4 :
-      segA (0, 1, 1, 0, 1, 0, 0);
+      segA (1, 0, 0, 1, 1, 0, 0);
       break;
 
     case 5 :
-      segA (0, 0, 1, 1, 0, 0, 0);
+      segA (0, 1, 0, 0, 1, 0, 0);
       break;
 
     case 6 :
-      segA (0, 0, 0, 1, 0, 0, 0);
+      segA (0, 1, 0, 0, 0, 0, 0);
       break;
 
     case 7 :
-      segA(0, 1, 1, 0, 0, 1, 1);
+      segA(0, 0, 0, 1, 1, 1, 1);
       break;
 
     case 8 :
-      segA(0, 0, 0, 0, 0, 0, 0);
+      segA (0, 0, 0, 0, 0, 0, 0);
       break;
 
     case 9 :
-      segA(0, 0, 0, 0, 0, 0, 0);
+      segA (0, 0, 0, 0, 1, 0, 0);
       break;
   }
 }
@@ -416,31 +415,31 @@ void numB() {
       break;
 
     case 1 :
-      segB (0, 1, 1, 0, 1, 1, 1);
+      segB (1, 0, 0, 1, 1, 1, 1);
       break;
 
     case 2 :
-      segB (1, 0, 0, 0, 0, 1, 0);
-      break;
-
-    case 3 :
       segB (0, 0, 1, 0, 0, 1, 0);
       break;
 
+    case 3 :
+      segB (0, 0, 0, 0, 1, 1, 0);
+      break;
+
     case 4 :
-      segB (0, 1, 1, 0, 1, 0, 0);
+      segB (1, 0, 0, 1, 1, 0, 0);
       break;
 
     case 5 :
-      segB (0, 0, 1, 1, 0, 0, 0);
+      segB (0, 1, 0, 0, 1, 0, 0);
       break;
 
     case 6 :
-      segB (0, 0, 0, 1, 0, 0, 0);
+      segB (0, 1, 0, 0, 0, 0, 0);
       break;
 
     case 7 :
-      segB(0, 1, 1, 0, 0, 1, 1);
+      segB(0, 0, 0, 1, 1, 1, 1);
       break;
 
     case 8 :
@@ -448,7 +447,7 @@ void numB() {
       break;
 
     case 9 :
-      segB (0, 0, 0, 0, 0, 0, 0);
+      segB (0, 0, 0, 0, 1, 0, 0);
       break;
   }
 }
